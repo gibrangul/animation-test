@@ -13,7 +13,7 @@
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 32px;
   row-gap: 32px;
-
+  scroll-behavior: smooth;
   // flex: 1;
   &::-webkit-scrollbar {
     display: none;

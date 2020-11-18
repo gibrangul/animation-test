@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import useDimensions from "./utils/useDimensions";
 
 const App = () => {
   const { width, height } = useDimensions();
+  const kpiRef = useRef(null);
+  const lineRef = useRef(null);
   // console.log(width, height);
   const cardLarge = (width - 224) / 3;
-  const cardSmall = 324;
+  const cardSmall = (width - 80) / 3;
+  const rows = Math.ceil(7 / 3);
   const girdVariants = {
     large: {
       gridAutoFlow: "row",
-      overflowY: "scroll",
-      overflowX: "hidden",
+      overflow: "scroll",
+      // overflowX: "hidden",
       gridTemplateColumns: `${cardLarge}px ${cardLarge}px ${cardLarge}px`,
-      gridTemplateRows: `${cardLarge}px`,
+      gridTemplateRows: `${cardLarge}px `.repeat(rows),
       marginTop: "32px",
       marginLeft: "32px",
       marginRight: "32px",
@@ -21,51 +24,53 @@ const App = () => {
       columnGap: "32px",
       transition: { duration: 0.4, ease: "easeInOut" },
       height: `${height - 80 - 72}px`,
+      gridRowGap: "32px",
     },
     small: {
-      overflowY: "hidden",
-      overflowX: "scroll",
-      gridAutoFlow: "column",
+      // overflowY: "hidden",
+      overflow: "hidden",
+      // gridAutoFlow: "column",
       gridTemplateColumns: `${cardSmall}px `.repeat(3),
-      gridTemplateRows: "72px",
+      gridTemplateRows: "72px ".repeat(rows),
       marginTop: "0px",
       marginLeft: "0px",
       marginRight: "0px",
       marginBottom: "0px",
       columnGap: "0px",
       transition: { duration: 0.4, ease: "easeInOut" },
-      height: "72px",
+      height: `${72 * rows}px`,
+      gridRowGap: "0px",
     },
   };
 
   const girdSecondVariants = {
     large: {
-      overflowY: "scroll",
-      overflowX: "hidden",
-      gridAutoFlow: "row",
+      overflow: "scroll",
+      // gridAutoFlow: "row",
       gridTemplateColumns: `${cardLarge}px ${cardLarge}px ${cardLarge}px`,
-      gridTemplateRows: `${cardLarge}px`,
+      gridTemplateRows: `${cardLarge}px `.repeat(rows),
       marginTop: "32px",
       marginLeft: "32px",
       marginRight: "32px",
       marginBottom: "0px",
       columnGap: "32px",
       transition: { duration: 0.4, ease: "easeInOut" },
-      height: `${height - 80 - 72 - 32 - 37 - 64}px`,
+      height: `${height - 80 - 72 * rows - 32 - 37 - 64}px`,
+      gridRowGap: "32px",
     },
     small: {
-      overflowY: "hidden",
-      overflowX: "scroll",
-      gridAutoFlow: "column",
-      gridTemplateColumns: "324px 324px 324px",
-      gridTemplateRows: "72px",
+      overflow: "hidden",
+      // gridAutoFlow: "column",
+      gridTemplateColumns: `${cardSmall}px `.repeat(3),
+      gridTemplateRows: "72px ".repeat(rows),
       marginTop: "0px",
       marginLeft: "0px",
       marginRight: "0px",
       marginBottom: "0px",
       columnGap: "0px",
       transition: { duration: 0.4, ease: "easeInOut" },
-      height: "72px",
+      height: `${72 * rows}px`,
+      gridRowGap: "0px",
     },
   };
 
@@ -98,7 +103,7 @@ const App = () => {
   const dataVariants = {
     visible: {
       opacity: 1,
-      height: `${height - 80 - 72}px`,
+      height: `${height - 80 - 72 * rows}px`,
       transition: { duration: 0.4, ease: "easeInOut" },
     },
     hidden: {
@@ -114,7 +119,7 @@ const App = () => {
       transition: { duration: 0.4, ease: "easeInOut" },
     },
     full: {
-      height: `${height - 80 - 72}px`,
+      height: `${height - 80 - 72 * rows}px`,
       transition: {
         duration: 0.4,
         ease: "easeInOut",
@@ -147,6 +152,7 @@ const App = () => {
         className="kpi-grid"
         variants={girdVariants}
         animate={isExapnded ? "small" : "large"}
+        ref={kpiRef}
       >
         <motion.div
           className="kpi-item"
@@ -270,21 +276,30 @@ const App = () => {
               <div
                 className="section"
                 style={{ backgroundColor: "#EC8986" }}
-                onClick={() => setIsExpanded(!isExapnded)}
+                onClick={() => {
+                  setIsExpanded(!isExapnded);
+                  kpiRef.current.scrollTop = 0;
+                }}
               >
                 Lines
               </div>
               <div
                 className="section"
                 style={{ backgroundColor: "#FFC785" }}
-                onClick={() => setIsExpanded(!isExapnded)}
+                onClick={() => {
+                  setIsExpanded(!isExapnded);
+                  kpiRef.current.scrollTop = 0;
+                }}
               >
                 Machines
               </div>
               <div
                 className="section"
                 style={{ backgroundColor: "#FFEB85" }}
-                onClick={() => setIsExpanded(!isExapnded)}
+                onClick={() => {
+                  setIsExpanded(!isExapnded);
+                  kpiRef.current.scrollTop = 0;
+                }}
               >
                 Workers
               </div>
@@ -309,7 +324,7 @@ const App = () => {
               <AnimatePresence>
                 {!isSecondExapnded && (
                   <motion.h1
-                    // onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                    // onClick={() => {setIsSecondExpanded(!isSecondExapnded)kpiRef.current.scrollTop = 0;}}
                     style={{ margin: "0px", marginLeft: "32px" }}
                     variants={sectionHeaderVariant}
                     initial="hidden"
@@ -324,6 +339,7 @@ const App = () => {
                 className="kpi-grid"
                 variants={girdSecondVariants}
                 animate={isSecondExapnded ? "small" : "large"}
+                ref={lineRef}
               >
                 <motion.div
                   className="kpi-item"
@@ -332,7 +348,10 @@ const App = () => {
                   style={{
                     backgroundColor: "#FF8585",
                   }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                  onClick={() => {
+                    setIsSecondExpanded(!isSecondExapnded);
+                    lineRef.current.scrollTop = 0;
+                  }}
                 >
                   <div className="content">
                     <h1>Line 1</h1>
@@ -345,7 +364,10 @@ const App = () => {
                   style={{
                     backgroundColor: "#FFC785",
                   }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                  onClick={() => {
+                    setIsSecondExpanded(!isSecondExapnded);
+                    lineRef.current.scrollTop = 0;
+                  }}
                 >
                   <div className="content">
                     <h1>Line 2</h1>
@@ -358,7 +380,10 @@ const App = () => {
                   style={{
                     backgroundColor: "#FFEB85",
                   }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                  onClick={() => {
+                    setIsSecondExpanded(!isSecondExapnded);
+                    lineRef.current.scrollTop = 0;
+                  }}
                 >
                   <div className="content">
                     <h1>Line 3</h1>
@@ -371,7 +396,10 @@ const App = () => {
                   style={{
                     backgroundColor: "#85FFBD",
                   }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                  onClick={() => {
+                    setIsSecondExpanded(!isSecondExapnded);
+                    lineRef.current.scrollTop = 0;
+                  }}
                 >
                   <div className="content">
                     <h1>Line 4</h1>
@@ -384,7 +412,10 @@ const App = () => {
                   style={{
                     backgroundColor: "#85BDFF",
                   }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                  onClick={() => {
+                    setIsSecondExpanded(!isSecondExapnded);
+                    lineRef.current.scrollTop = 0;
+                  }}
                 >
                   <div className="content">
                     <h1>Line 5</h1>
@@ -397,7 +428,10 @@ const App = () => {
                   style={{
                     backgroundColor: "#D185FF",
                   }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                  onClick={() => {
+                    setIsSecondExpanded(!isSecondExapnded);
+                    lineRef.current.scrollTop = 0;
+                  }}
                 >
                   <div className="content">
                     <h1>Line 6</h1>
@@ -410,7 +444,10 @@ const App = () => {
                   style={{
                     backgroundColor: "#D8FDFF",
                   }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                  onClick={() => {
+                    setIsSecondExpanded(!isSecondExapnded);
+                    lineRef.current.scrollTop = 0;
+                  }}
                 >
                   <div className="content">
                     <h1>Line 7</h1>
