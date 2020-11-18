@@ -5,51 +5,57 @@ import useDimensions from "./utils/useDimensions";
 const App = () => {
   const { width, height } = useDimensions();
   // console.log(width, height);
+  const cardLarge = (width - 224) / 3;
+  const cardSmall = 324;
   const girdVariants = {
     large: {
       gridAutoFlow: "row",
-      gridTemplateColumns: `${(width - 224) / 3}px ${(width - 224) / 3}px ${
-        (width - 224) / 3
-      }px`,
-      gridTemplateRows: `${(width - 224) / 3}px`,
+      overflowY: "scroll",
+      overflowX: "hidden",
+      gridTemplateColumns: `${cardLarge}px ${cardLarge}px ${cardLarge}px`,
+      gridTemplateRows: `${cardLarge}px`,
       marginTop: "32px",
       marginLeft: "32px",
       marginRight: "32px",
       marginBottom: "0px",
       columnGap: "32px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
       height: `${height - 80 - 72}px`,
     },
     small: {
+      overflowY: "hidden",
+      overflowX: "scroll",
       gridAutoFlow: "column",
-      gridTemplateColumns: "324px 324px 324px",
+      gridTemplateColumns: `${cardSmall}px `.repeat(3),
       gridTemplateRows: "72px",
       marginTop: "0px",
       marginLeft: "0px",
       marginRight: "0px",
       marginBottom: "0px",
       columnGap: "0px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
       height: "72px",
     },
   };
 
   const girdSecondVariants = {
     large: {
+      overflowY: "scroll",
+      overflowX: "hidden",
       gridAutoFlow: "row",
-      gridTemplateColumns: `${(width - 224) / 3}px ${(width - 224) / 3}px ${
-        (width - 224) / 3
-      }px`,
-      gridTemplateRows: `${(width - 224) / 3}px`,
+      gridTemplateColumns: `${cardLarge}px ${cardLarge}px ${cardLarge}px`,
+      gridTemplateRows: `${cardLarge}px`,
       marginTop: "32px",
       marginLeft: "32px",
       marginRight: "32px",
       marginBottom: "0px",
       columnGap: "32px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
       height: `${height - 80 - 72 - 32 - 37 - 64}px`,
     },
     small: {
+      overflowY: "hidden",
+      overflowX: "scroll",
       gridAutoFlow: "column",
       gridTemplateColumns: "324px 324px 324px",
       gridTemplateRows: "72px",
@@ -58,7 +64,7 @@ const App = () => {
       marginRight: "0px",
       marginBottom: "0px",
       columnGap: "0px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
       height: "72px",
     },
   };
@@ -67,12 +73,12 @@ const App = () => {
     large: {
       flexDirection: "column",
       borderRadius: "20px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
     small: {
       flexDirection: "row",
       borderRadius: "0px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
   };
 
@@ -80,12 +86,12 @@ const App = () => {
     visible: {
       opacity: 1,
       height: "72px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
     hidden: {
       opacity: 0,
       height: "0px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
   };
 
@@ -93,24 +99,24 @@ const App = () => {
     visible: {
       opacity: 1,
       height: `${height - 80 - 72}px`,
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
     hidden: {
       opacity: 0,
       height: "0px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
   };
 
   const anotherVariant = {
     buttons: {
       height: "72px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
     full: {
       height: `${height - 80 - 72}px`,
       transition: {
-        duration: 1.2,
+        duration: 0.4,
         ease: "easeInOut",
         staggerChildren: 12,
         delayChildren: 3,
@@ -123,13 +129,13 @@ const App = () => {
       opacity: 0,
       paddingTop: "0px",
       height: "0px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
     visible: {
       opacity: 1,
       height: "37px",
       paddingTop: "32px",
-      transition: { duration: 1.2, ease: "easeInOut" },
+      transition: { duration: 0.4, ease: "easeInOut" },
     },
   };
 
