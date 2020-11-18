@@ -4,7 +4,7 @@ import useDimensions from "./utils/useDimensions";
 
 const App = () => {
   const { width, height } = useDimensions();
-  console.log(width, height);
+  // console.log(width, height);
   const girdVariants = {
     large: {
       gridAutoFlow: "row",
@@ -22,7 +22,7 @@ const App = () => {
     },
     small: {
       gridAutoFlow: "column",
-      gridTemplateColumns: "unset",
+      gridTemplateColumns: "324px 324px 324px",
       gridTemplateRows: "72px",
       marginTop: "0px",
       marginLeft: "0px",
@@ -51,7 +51,7 @@ const App = () => {
     },
     small: {
       gridAutoFlow: "column",
-      gridTemplateColumns: "unset",
+      gridTemplateColumns: "324px 324px 324px",
       gridTemplateRows: "72px",
       marginTop: "0px",
       marginLeft: "0px",
