@@ -1,8 +1,34 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fafafa;
+  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.primary-font {
+  color: #4c5775;
+}
+
+.secondary-font {
+  color: rgba($color: #4c5775, $alpha: 0.6);
+}
+
 .container {
-  margin: 40px;
+  background-color: white;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
-  height: calc(100vh - 80px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -10,43 +36,51 @@
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
   column-gap: 32px;
   row-gap: 32px;
-
-  // flex: 1;
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
 .kpi-item {
-  min-width: 300px;
-  padding: 12px;
+  min-width: 324px;
+  // padding: 12px;
   border-radius: 20px;
   position: relative;
-
+  background-color: #f8fafc;
   &::before {
     content: "";
-    display: block;
-    padding-top: 100%;
+    display: inline-block;
+    padding-bottom: 100%;
+    vertical-align: top;
   }
 
-  .content {
+  &__content {
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &__details {
+      display: flex;
+      justify-content: space-between;
+      h1 {
+        user-select: none;
+        font-weight: 500;
+      }
+      h2 {
+        user-select: none;
+        font-weight: 400;
+      }
+    }
 
-    display: flex; /* added for centered text */
-    justify-content: center; /* added for centered text */
-    align-items: center; /* added for centered text */
-
-    h1,
-    h3 {
-      user-select: none;
-      cursor: pointer;
+    .chart-container {
+      transform-origin: 0% 0%;
+      overflow: hidden;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
     }
   }
 }
@@ -58,4 +92,11 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  background-color: #f8fafc;
+}
+
+.kpi-bg {
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: white;
 }

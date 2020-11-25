@@ -1,40 +1,110 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import useDimensions from "./utils/useDimensions";
+import KPI from "./KPI";
+
+const CONTAINER_MARGIN = 40;
+const SPACING = 32;
+const ROW_HEIGHT = 72;
+const NUM_COLUMNS = 4;
+const DEFAULT_TRANSITION = { duration: 0.4, ease: "easeInOut" };
+
+const getGridDimensions = (width, height) => {
+  const cardLarge = (width - SPACING * (NUM_COLUMNS - 1) - 64) / NUM_COLUMNS;
+  const cardSmall = 324;
+  return {
+    large: {
+      gridAutoFlow: "row",
+      gridTemplateColumns: `${cardLarge}px `.repeat(NUM_COLUMNS),
+      gridTemplateRows: `${cardLarge}px`,
+      marginLeft: `${SPACING}px`,
+      marginRight: `${SPACING}px`,
+      paddingBottom: `${SPACING}px`,
+      columnGap: `${SPACING}px`,
+      transition: DEFAULT_TRANSITION,
+      // maxHeight: `${height - CONTAINER_MARGIN * 2 - ROW_HEIGHT}px`,
+    },
+    small: {
+      gridAutoFlow: "column",
+      gridTemplateColumns: `${cardSmall}px `.repeat(NUM_COLUMNS),
+      gridTemplateRows: `${ROW_HEIGHT}px`,
+      marginLeft: "0px",
+      marginRight: "0px",
+      paddingBottom: `0px`,
+      columnGap: "0px",
+      transition: DEFAULT_TRANSITION,
+      // maxHeight: `${ROW_HEIGHT}px`,
+    },
+  };
+};
+const chartList = [
+  {
+    name: "Efficiency",
+    data: [31, 50, 60, 51, 42, 96, 100],
+    colors: ["#3CC8BA"],
+  },
+  {
+    name: "Performance",
+    data: [60, 50, 65, 51, 60, 80, 75],
+    colors: ["#3C52C8"],
+  },
+  {
+    name: "LBR",
+    data: [10, 29, 42, 32, 65, 45, 60],
+    colors: ["#FFEB85"],
+  },
+  {
+    name: "DHU",
+    data: [70, 60, 50, 40, 30, 20, 9],
+    colors: ["#FF8585"],
+  },
+  {
+    name: "Turnover",
+    data: [35, 41, 30, 23, 24, 25, 32],
+    colors: ["#FFC785"],
+  },
+  {
+    name: "Absenteeism",
+    data: [29, 35, 32, 20, 15, 15, 32],
+    colors: ["#D185FF"],
+  },
+  {
+    name: "Machine Utlization",
+    data: [70, 60, 50, 40, 30, 20, 9],
+    colors: ["#FF8C85"],
+  },
+  {
+    name: "WIP",
+    data: [2000, 2700, 2800, 3200, 3200, 3200, 3200],
+    colors: ["#8F85FF"],
+    dataType: "PCs",
+  },
+];
 
 const App = () => {
   const { width, height } = useDimensions();
+
   // console.log(width, height);
-  const cardLarge = (width - 224) / 3;
+  const cardLarge = (width - 208) / NUM_COLUMNS;
   const cardSmall = 324;
-  const girdVariants = {
-    large: {
-      gridAutoFlow: "row",
-      overflowY: "scroll",
-      overflowX: "hidden",
-      gridTemplateColumns: `${cardLarge}px ${cardLarge}px ${cardLarge}px`,
-      gridTemplateRows: `${cardLarge}px`,
-      marginTop: "32px",
-      marginLeft: "32px",
-      marginRight: "32px",
-      marginBottom: "0px",
-      columnGap: "32px",
-      transition: { duration: 0.4, ease: "easeInOut" },
-      height: `${height - 80 - 72}px`,
-    },
+
+  const girdVariants = useMemo(() => getGridDimensions(width, height), [
+    width,
+    height,
+  ]);
+
+  const gridContainerVariants = {
     small: {
+      height: `${ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
       overflowY: "hidden",
       overflowX: "scroll",
-      gridAutoFlow: "column",
-      gridTemplateColumns: `${cardSmall}px `.repeat(3),
-      gridTemplateRows: "72px",
-      marginTop: "0px",
-      marginLeft: "0px",
-      marginRight: "0px",
-      marginBottom: "0px",
-      columnGap: "0px",
-      transition: { duration: 0.4, ease: "easeInOut" },
-      height: "72px",
+    },
+    large: {
+      height: `${height - CONTAINER_MARGIN * 2 - ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
+      overflowY: "scroll",
+      overflowX: "hidden",
     },
   };
 
@@ -43,78 +113,75 @@ const App = () => {
       overflowY: "scroll",
       overflowX: "hidden",
       gridAutoFlow: "row",
-      gridTemplateColumns: `${cardLarge}px ${cardLarge}px ${cardLarge}px`,
+      gridTemplateColumns: `${cardLarge}px `.repeat(NUM_COLUMNS),
       gridTemplateRows: `${cardLarge}px`,
-      marginTop: "32px",
-      marginLeft: "32px",
-      marginRight: "32px",
+      marginTop: `${SPACING}px`,
+      marginLeft: `${SPACING}px`,
+      marginRight: `${SPACING}px`,
       marginBottom: "0px",
-      columnGap: "32px",
-      transition: { duration: 0.4, ease: "easeInOut" },
-      height: `${height - 80 - 72 - 32 - 37 - 64}px`,
+      columnGap: `${SPACING}px`,
+      transition: DEFAULT_TRANSITION,
     },
     small: {
       overflowY: "hidden",
       overflowX: "scroll",
       gridAutoFlow: "column",
-      gridTemplateColumns: "324px 324px 324px",
-      gridTemplateRows: "72px",
+      gridTemplateColumns: `${cardSmall}px `.repeat(NUM_COLUMNS),
+      gridTemplateRows: `${ROW_HEIGHT}px`,
       marginTop: "0px",
       marginLeft: "0px",
       marginRight: "0px",
       marginBottom: "0px",
       columnGap: "0px",
-      transition: { duration: 0.4, ease: "easeInOut" },
-      height: "72px",
+      transition: DEFAULT_TRANSITION,
     },
   };
 
   const itemVariants = {
     large: {
-      flexDirection: "column",
-      borderRadius: "20px",
-      transition: { duration: 0.4, ease: "easeInOut" },
+      borderRadius: "40px",
+      transition: DEFAULT_TRANSITION,
     },
     small: {
-      flexDirection: "row",
       borderRadius: "0px",
-      transition: { duration: 0.4, ease: "easeInOut" },
+      transition: DEFAULT_TRANSITION,
     },
   };
 
   const buttonVariants = {
     visible: {
       opacity: 1,
-      height: "72px",
-      transition: { duration: 0.4, ease: "easeInOut" },
+      height: `${ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
     },
     hidden: {
       opacity: 0,
       height: "0px",
-      transition: { duration: 0.4, ease: "easeInOut" },
+      transition: DEFAULT_TRANSITION,
     },
   };
 
   const dataVariants = {
     visible: {
       opacity: 1,
-      height: `${height - 80 - 72}px`,
-      transition: { duration: 0.4, ease: "easeInOut" },
+      height: `${height - CONTAINER_MARGIN * 2 - ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
     },
     hidden: {
       opacity: 0,
       height: "0px",
-      transition: { duration: 0.4, ease: "easeInOut" },
+      transition: DEFAULT_TRANSITION,
     },
   };
 
   const anotherVariant = {
     buttons: {
-      height: "72px",
-      transition: { duration: 0.4, ease: "easeInOut" },
+      height: `${ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
+      borderTop: "1px solid #B8BCC7",
     },
     full: {
-      height: `${height - 80 - 72}px`,
+      height: `${height - CONTAINER_MARGIN * 2 - ROW_HEIGHT}px`,
       transition: {
         duration: 0.4,
         ease: "easeInOut",
@@ -129,13 +196,13 @@ const App = () => {
       opacity: 0,
       paddingTop: "0px",
       height: "0px",
-      transition: { duration: 0.4, ease: "easeInOut" },
+      transition: DEFAULT_TRANSITION,
     },
     visible: {
       opacity: 1,
       height: "37px",
-      paddingTop: "32px",
-      transition: { duration: 0.4, ease: "easeInOut" },
+      paddingTop: `${SPACING}px`,
+      transition: DEFAULT_TRANSITION,
     },
   };
 
@@ -143,111 +210,43 @@ const App = () => {
   const [isSecondExapnded, setIsSecondExpanded] = useState(false);
   return (
     <div className="container">
+      <div
+        style={{
+          display: "flex",
+          padding: "0 32px",
+          height: "80px",
+          alignItems: "center",
+        }}
+      >
+        <h1 className="primary-font">Dashboard</h1>
+      </div>
       <motion.div
-        className="kpi-grid"
-        variants={girdVariants}
+        variants={gridContainerVariants}
+        initial="large"
         animate={isExapnded ? "small" : "large"}
       >
         <motion.div
-          className="kpi-item"
-          variants={itemVariants}
+          className="kpi-grid"
+          variants={girdVariants}
+          initial="large"
           animate={isExapnded ? "small" : "large"}
-          style={{
-            backgroundColor: "#FFD8D8",
-          }}
-          onClick={() => {
-            setIsExpanded(false);
-            setIsSecondExpanded(false);
-          }}
         >
-          <div className="content">
-            <h1>32%</h1>
-            <h3>KPI 1</h3>
-          </div>
-        </motion.div>
-        <motion.div
-          className="kpi-item"
-          variants={itemVariants}
-          animate={isExapnded ? "small" : "large"}
-          style={{
-            backgroundColor: "#D8D8FF",
-          }}
-          onClick={() => setIsExpanded(false)}
-        >
-          <div className="content">
-            <h1>32%</h1>
-            <h3>KPI 2</h3>
-          </div>
-        </motion.div>
-        <motion.div
-          className="kpi-item"
-          variants={itemVariants}
-          animate={isExapnded ? "small" : "large"}
-          style={{
-            backgroundColor: "#D8FFE0",
-          }}
-          onClick={() => setIsExpanded(false)}
-        >
-          <div className="content">
-            <h1>32%</h1>
-            <h3>KPI 3</h3>
-          </div>
-        </motion.div>
-        <motion.div
-          className="kpi-item"
-          variants={itemVariants}
-          animate={isExapnded ? "small" : "large"}
-          style={{
-            backgroundColor: "#F9FFD8",
-          }}
-          onClick={() => setIsExpanded(false)}
-        >
-          <div className="content">
-            <h1>32%</h1>
-            <h3>KPI 4</h3>
-          </div>
-        </motion.div>
-        <motion.div
-          className="kpi-item"
-          variants={itemVariants}
-          animate={isExapnded ? "small" : "large"}
-          style={{
-            backgroundColor: "#FFD8FB",
-          }}
-          onClick={() => setIsExpanded(false)}
-        >
-          <div className="content">
-            <h1>32%</h1>
-            <h3>KPI 5</h3>
-          </div>
-        </motion.div>
-        <motion.div
-          className="kpi-item"
-          variants={itemVariants}
-          animate={isExapnded ? "small" : "large"}
-          style={{
-            backgroundColor: "#D8FDFF",
-          }}
-          onClick={() => setIsExpanded(false)}
-        >
-          <div className="content">
-            <h1>32%</h1>
-            <h3>KPI 6</h3>
-          </div>
-        </motion.div>
-        <motion.div
-          className="kpi-item"
-          variants={itemVariants}
-          animate={isExapnded ? "small" : "large"}
-          style={{
-            backgroundColor: "#D8FDFF",
-          }}
-          onClick={() => setIsExpanded(false)}
-        >
-          <div className="content">
-            <h1>32%</h1>
-            <h3>KPI 7</h3>
-          </div>
+          {chartList.map((chartData) => (
+            <KPI
+              key={chartData.name}
+              chartData={chartData}
+              onClick={() => {
+                setIsExpanded(false);
+                setIsSecondExpanded(false);
+              }}
+              expanded={!isExapnded}
+              dimensions={{
+                maxWidth: cardLarge,
+                minWidth: cardSmall,
+                minHeight: 72,
+              }}
+            />
+          ))}
         </motion.div>
       </motion.div>
       <motion.div
@@ -269,21 +268,18 @@ const App = () => {
             >
               <div
                 className="section"
-                style={{ backgroundColor: "#EC8986" }}
                 onClick={() => setIsExpanded(!isExapnded)}
               >
                 Lines
               </div>
               <div
                 className="section"
-                style={{ backgroundColor: "#FFC785" }}
                 onClick={() => setIsExpanded(!isExapnded)}
               >
                 Machines
               </div>
               <div
                 className="section"
-                style={{ backgroundColor: "#FFEB85" }}
                 onClick={() => setIsExpanded(!isExapnded)}
               >
                 Workers
@@ -302,7 +298,7 @@ const App = () => {
                 {
                   // backgroundColor: "black",
                   // position: "absolute",
-                  // paddingTop: "32px",
+                  // paddingTop: `${SPACING}px`,
                 }
               }
             >
@@ -310,7 +306,7 @@ const App = () => {
                 {!isSecondExapnded && (
                   <motion.h1
                     // onClick={() => setIsSecondExpanded(!isSecondExapnded)}
-                    style={{ margin: "0px", marginLeft: "32px" }}
+                    style={{ margin: "0px", marginLeft: `${SPACING}px` }}
                     variants={sectionHeaderVariant}
                     initial="hidden"
                     animate="visible"
@@ -323,6 +319,7 @@ const App = () => {
               <motion.div
                 className="kpi-grid"
                 variants={girdSecondVariants}
+                initial="large"
                 animate={isSecondExapnded ? "small" : "large"}
               >
                 <motion.div
