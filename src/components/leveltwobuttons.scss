@@ -1,0 +1,11 @@
+.level-two-buttons {
+  display: flex;
+  .button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f8fafc;
+  }
+}

@@ -1,0 +1,41 @@
+.kpi-card {
+  min-width: 324px;
+  // padding: 12px;
+  border-radius: 20px;
+  position: relative;
+  background-color: #f8fafc;
+  &::before {
+    content: "";
+    display: inline-block;
+    padding-bottom: 100%;
+    vertical-align: top;
+  }
+
+  &__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &__details {
+      display: flex;
+      justify-content: space-between;
+      h1 {
+        user-select: none;
+        font-weight: 500;
+      }
+      h2 {
+        user-select: none;
+        font-weight: 400;
+      }
+    }
+
+    .chart-container {
+      transform-origin: 0% 0%;
+      overflow: hidden;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+  }
+}

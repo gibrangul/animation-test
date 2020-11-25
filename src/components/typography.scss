@@ -1,0 +1,22 @@
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.primary-font {
+  color: #4c5775;
+}
+
+.secondary-font {
+  color: rgba($color: #4c5775, $alpha: 0.6);
+}

@@ -1,417 +1,218 @@
 import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import useDimensions from "./utils/useDimensions";
-import KPI from "./KPI";
+import useDimensions from "../utils/useDimensions";
+import KPICard from "./KPICard";
+import LineCard from "./LineCard";
+import { chartList, lineList } from "./dummyData";
+import LevelTwoButtons from "./LevelTwoButtons";
+import NavBar from "./NavBar";
+import SectionHeader from "./SectionHeader";
 
-const CONTAINER_MARGIN = 40;
+const NAV_BAR_HEIGHT = 80;
 const SPACING = 32;
 const ROW_HEIGHT = 72;
 const NUM_COLUMNS = 4;
 const DEFAULT_TRANSITION = { duration: 0.4, ease: "easeInOut" };
 
-const getGridDimensions = (width, height) => {
-  const cardLarge = (width - SPACING * (NUM_COLUMNS - 1) - 64) / NUM_COLUMNS;
-  const cardSmall = 324;
+const getGridContainerVariants = (dimensions, transition) => {
   return {
-    large: {
-      gridAutoFlow: "row",
-      gridTemplateColumns: `${cardLarge}px `.repeat(NUM_COLUMNS),
-      gridTemplateRows: `${cardLarge}px`,
-      marginLeft: `${SPACING}px`,
-      marginRight: `${SPACING}px`,
-      paddingBottom: `${SPACING}px`,
-      columnGap: `${SPACING}px`,
-      transition: DEFAULT_TRANSITION,
-      // maxHeight: `${height - CONTAINER_MARGIN * 2 - ROW_HEIGHT}px`,
-    },
     small: {
-      gridAutoFlow: "column",
-      gridTemplateColumns: `${cardSmall}px `.repeat(NUM_COLUMNS),
-      gridTemplateRows: `${ROW_HEIGHT}px`,
-      marginLeft: "0px",
-      marginRight: "0px",
-      paddingBottom: `0px`,
-      columnGap: "0px",
-      transition: DEFAULT_TRANSITION,
-      // maxHeight: `${ROW_HEIGHT}px`,
+      height: `${dimensions.minHeight}px`,
+      transition,
+      overflowY: "hidden",
+      overflowX: "scroll",
+    },
+    large: {
+      height: `${dimensions.maxHeight}px`,
+      transition,
+      overflowY: "scroll",
+      overflowX: "hidden",
     },
   };
 };
-const chartList = [
-  {
-    name: "Efficiency",
-    data: [31, 50, 60, 51, 42, 96, 100],
-    colors: ["#3CC8BA"],
-  },
-  {
-    name: "Performance",
-    data: [60, 50, 65, 51, 60, 80, 75],
-    colors: ["#3C52C8"],
-  },
-  {
-    name: "LBR",
-    data: [10, 29, 42, 32, 65, 45, 60],
-    colors: ["#FFEB85"],
-  },
-  {
-    name: "DHU",
-    data: [70, 60, 50, 40, 30, 20, 9],
-    colors: ["#FF8585"],
-  },
-  {
-    name: "Turnover",
-    data: [35, 41, 30, 23, 24, 25, 32],
-    colors: ["#FFC785"],
-  },
-  {
-    name: "Absenteeism",
-    data: [29, 35, 32, 20, 15, 15, 32],
-    colors: ["#D185FF"],
-  },
-  {
-    name: "Machine Utlization",
-    data: [70, 60, 50, 40, 30, 20, 9],
-    colors: ["#FF8C85"],
-  },
-  {
-    name: "WIP",
-    data: [2000, 2700, 2800, 3200, 3200, 3200, 3200],
-    colors: ["#8F85FF"],
-    dataType: "PCs",
-  },
-];
+
+const getGridVariants = (cardDimensions, spacing, columns, transition) => {
+  return {
+    large: {
+      gridAutoFlow: "row",
+      gridTemplateColumns: `${cardDimensions.maxWidth}px `.repeat(columns),
+      gridTemplateRows: `${cardDimensions.maxWidth}px`,
+      marginLeft: `${spacing}px`,
+      marginRight: `${spacing}px`,
+      paddingBottom: `${spacing}px`,
+      columnGap: `${spacing}px`,
+      rowGap: `${spacing}px`,
+      transition,
+    },
+    small: {
+      gridAutoFlow: "column",
+      gridTemplateColumns: `${cardDimensions.minWidth}px `.repeat(columns),
+      gridTemplateRows: `${cardDimensions.minHeight}px`,
+      marginLeft: "0px",
+      marginRight: "0px",
+      paddingBottom: "0px",
+      columnGap: "0px",
+      rowGap: "0px",
+      transition,
+    },
+  };
+};
 
 const App = () => {
   const { width, height } = useDimensions();
 
-  // console.log(width, height);
-  const cardLarge = (width - 208) / NUM_COLUMNS;
+  const cardLarge = (width - SPACING * (NUM_COLUMNS - 1) - 64) / NUM_COLUMNS;
   const cardSmall = 324;
 
-  const girdVariants = useMemo(() => getGridDimensions(width, height), [
-    width,
-    height,
-  ]);
-
-  const gridContainerVariants = {
-    small: {
-      height: `${ROW_HEIGHT}px`,
-      transition: DEFAULT_TRANSITION,
-      overflowY: "hidden",
-      overflowX: "scroll",
-    },
-    large: {
-      height: `${height - CONTAINER_MARGIN * 2 - ROW_HEIGHT}px`,
-      transition: DEFAULT_TRANSITION,
-      overflowY: "scroll",
-      overflowX: "hidden",
-    },
+  const cardDimensions = {
+    maxWidth: cardLarge,
+    minWidth: cardSmall,
+    minHeight: ROW_HEIGHT,
   };
 
-  const girdSecondVariants = {
-    large: {
-      overflowY: "scroll",
-      overflowX: "hidden",
-      gridAutoFlow: "row",
-      gridTemplateColumns: `${cardLarge}px `.repeat(NUM_COLUMNS),
-      gridTemplateRows: `${cardLarge}px`,
-      marginTop: `${SPACING}px`,
-      marginLeft: `${SPACING}px`,
-      marginRight: `${SPACING}px`,
-      marginBottom: "0px",
-      columnGap: `${SPACING}px`,
-      transition: DEFAULT_TRANSITION,
-    },
-    small: {
-      overflowY: "hidden",
-      overflowX: "scroll",
-      gridAutoFlow: "column",
-      gridTemplateColumns: `${cardSmall}px `.repeat(NUM_COLUMNS),
-      gridTemplateRows: `${ROW_HEIGHT}px`,
-      marginTop: "0px",
-      marginLeft: "0px",
-      marginRight: "0px",
-      marginBottom: "0px",
-      columnGap: "0px",
-      transition: DEFAULT_TRANSITION,
-    },
-  };
+  const kpiGridContainerVariants = useMemo(
+    () =>
+      getGridContainerVariants(
+        {
+          maxHeight: height - NAV_BAR_HEIGHT - ROW_HEIGHT * 1,
+          minHeight: ROW_HEIGHT,
+        },
+        DEFAULT_TRANSITION
+      ),
+    [height]
+  );
 
-  const itemVariants = {
-    large: {
-      borderRadius: "40px",
-      transition: DEFAULT_TRANSITION,
-    },
-    small: {
-      borderRadius: "0px",
-      transition: DEFAULT_TRANSITION,
-    },
-  };
+  const lineGridContainerVariants = useMemo(
+    () =>
+      getGridContainerVariants(
+        {
+          maxHeight: height - NAV_BAR_HEIGHT - ROW_HEIGHT * 2,
+          minHeight: ROW_HEIGHT,
+        },
+        DEFAULT_TRANSITION
+      ),
+    [height]
+  );
 
-  const buttonVariants = {
-    visible: {
-      opacity: 1,
-      height: `${ROW_HEIGHT}px`,
-      transition: DEFAULT_TRANSITION,
-    },
-    hidden: {
-      opacity: 0,
-      height: "0px",
-      transition: DEFAULT_TRANSITION,
-    },
-  };
+  const gridSizeVariants = useMemo(
+    () =>
+      getGridVariants(
+        { maxWidth: cardLarge, minWidth: cardSmall, minHeight: ROW_HEIGHT },
+        SPACING,
+        NUM_COLUMNS,
+        DEFAULT_TRANSITION
+      ),
+    [cardLarge]
+  );
 
-  const dataVariants = {
-    visible: {
-      opacity: 1,
-      height: `${height - CONTAINER_MARGIN * 2 - ROW_HEIGHT}px`,
-      transition: DEFAULT_TRANSITION,
-    },
-    hidden: {
-      opacity: 0,
-      height: "0px",
-      transition: DEFAULT_TRANSITION,
-    },
-  };
-
-  const anotherVariant = {
+  const levelTwoContainerVariants = {
     buttons: {
       height: `${ROW_HEIGHT}px`,
       transition: DEFAULT_TRANSITION,
       borderTop: "1px solid #B8BCC7",
     },
     full: {
-      height: `${height - CONTAINER_MARGIN * 2 - ROW_HEIGHT}px`,
-      transition: {
-        duration: 0.4,
-        ease: "easeInOut",
-        staggerChildren: 12,
-        delayChildren: 3,
-      },
+      height: `${height - NAV_BAR_HEIGHT - ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
     },
   };
 
-  const sectionHeaderVariant = {
+  const levelTwoContentVariants = {
+    visible: {
+      opacity: 1,
+      height: `${height - NAV_BAR_HEIGHT - ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
+    },
     hidden: {
       opacity: 0,
-      paddingTop: "0px",
       height: "0px",
       transition: DEFAULT_TRANSITION,
     },
-    visible: {
-      opacity: 1,
-      height: "37px",
-      paddingTop: `${SPACING}px`,
-      transition: DEFAULT_TRANSITION,
-    },
   };
 
-  const [isExapnded, setIsExpanded] = useState(false);
-  const [isSecondExapnded, setIsSecondExpanded] = useState(false);
+  const [levelOneExpanded, expandLevelOne] = useState(true);
+  const [levelTwoExapanded, expandLevelTwo] = useState(false);
   return (
     <div className="container">
-      <div
-        style={{
-          display: "flex",
-          padding: "0 32px",
-          height: "80px",
-          alignItems: "center",
-        }}
-      >
-        <h1 className="primary-font">Dashboard</h1>
-      </div>
-      <motion.div
-        variants={gridContainerVariants}
-        initial="large"
-        animate={isExapnded ? "small" : "large"}
-      >
+      <NavBar />
+      <motion.div className="level-one-contiainer">
         <motion.div
-          className="kpi-grid"
-          variants={girdVariants}
+          className="scroll-container level-one-grid-contiainer"
+          variants={kpiGridContainerVariants}
           initial="large"
-          animate={isExapnded ? "small" : "large"}
+          animate={levelOneExpanded ? "large" : "small"}
         >
-          {chartList.map((chartData) => (
-            <KPI
-              key={chartData.name}
-              chartData={chartData}
-              onClick={() => {
-                setIsExpanded(false);
-                setIsSecondExpanded(false);
-              }}
-              expanded={!isExapnded}
-              dimensions={{
-                maxWidth: cardLarge,
-                minWidth: cardSmall,
-                minHeight: 72,
-              }}
-            />
-          ))}
+          <motion.div
+            className="grid"
+            variants={gridSizeVariants}
+            initial="large"
+            animate={levelOneExpanded ? "large" : "small"}
+          >
+            {chartList.map((chartData) => (
+              <KPICard
+                key={chartData.name}
+                chartData={chartData}
+                onClick={() => {
+                  expandLevelOne(true);
+                  expandLevelTwo(false);
+                }}
+                expanded={levelOneExpanded}
+                dimensions={cardDimensions}
+              />
+            ))}
+          </motion.div>
         </motion.div>
       </motion.div>
       <motion.div
-        variants={anotherVariant}
-        // initial="buttons"
-        animate={isExapnded ? "full" : "buttons"}
+        className="level-two-contiainer"
+        variants={levelTwoContainerVariants}
+        animate={levelOneExpanded ? "buttons" : "full"}
       >
         <AnimatePresence>
-          {!isExapnded && (
-            <motion.div
-              style={{
-                display: "flex",
-                // position: "absolute",
+          {levelOneExpanded && (
+            <LevelTwoButtons
+              height={ROW_HEIGHT}
+              transition={DEFAULT_TRANSITION}
+              onClick={() => {
+                expandLevelOne(false);
+                expandLevelTwo(true);
               }}
-              variants={buttonVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-            >
-              <div
-                className="section"
-                onClick={() => setIsExpanded(!isExapnded)}
-              >
-                Lines
-              </div>
-              <div
-                className="section"
-                onClick={() => setIsExpanded(!isExapnded)}
-              >
-                Machines
-              </div>
-              <div
-                className="section"
-                onClick={() => setIsExpanded(!isExapnded)}
-              >
-                Workers
-              </div>
-            </motion.div>
+            />
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {isExapnded && (
+          {!levelOneExpanded && (
             <motion.div
-              variants={dataVariants}
+              className="level-two-content"
+              variants={levelTwoContentVariants}
               initial="hidden"
               animate="visible"
               exit="hidden"
-              style={
-                {
-                  // backgroundColor: "black",
-                  // position: "absolute",
-                  // paddingTop: `${SPACING}px`,
-                }
-              }
             >
               <AnimatePresence>
-                {!isSecondExapnded && (
-                  <motion.h1
-                    // onClick={() => setIsSecondExpanded(!isSecondExapnded)}
-                    style={{ margin: "0px", marginLeft: `${SPACING}px` }}
-                    variants={sectionHeaderVariant}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                  >
-                    Lines
-                  </motion.h1>
-                )}
+                {levelTwoExapanded && <SectionHeader />}
               </AnimatePresence>
               <motion.div
-                className="kpi-grid"
-                variants={girdSecondVariants}
+                className="scroll-container level-two-grid-container"
+                variants={lineGridContainerVariants}
                 initial="large"
-                animate={isSecondExapnded ? "small" : "large"}
+                animate={levelTwoExapanded ? "large" : "small"}
               >
                 <motion.div
-                  className="kpi-item"
-                  variants={itemVariants}
-                  animate={isSecondExapnded ? "small" : "large"}
-                  style={{
-                    backgroundColor: "#FF8585",
-                  }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
+                  className="grid"
+                  variants={gridSizeVariants}
+                  initial="large"
+                  animate={levelTwoExapanded ? "large" : "small"}
                 >
-                  <div className="content">
-                    <h1>Line 1</h1>
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="kpi-item"
-                  variants={itemVariants}
-                  animate={isSecondExapnded ? "small" : "large"}
-                  style={{
-                    backgroundColor: "#FFC785",
-                  }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
-                >
-                  <div className="content">
-                    <h1>Line 2</h1>
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="kpi-item"
-                  variants={itemVariants}
-                  animate={isSecondExapnded ? "small" : "large"}
-                  style={{
-                    backgroundColor: "#FFEB85",
-                  }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
-                >
-                  <div className="content">
-                    <h1>Line 3</h1>
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="kpi-item"
-                  variants={itemVariants}
-                  animate={isSecondExapnded ? "small" : "large"}
-                  style={{
-                    backgroundColor: "#85FFBD",
-                  }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
-                >
-                  <div className="content">
-                    <h1>Line 4</h1>
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="kpi-item"
-                  variants={itemVariants}
-                  animate={isSecondExapnded ? "small" : "large"}
-                  style={{
-                    backgroundColor: "#85BDFF",
-                  }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
-                >
-                  <div className="content">
-                    <h1>Line 5</h1>
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="kpi-item"
-                  variants={itemVariants}
-                  animate={isSecondExapnded ? "small" : "large"}
-                  style={{
-                    backgroundColor: "#D185FF",
-                  }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
-                >
-                  <div className="content">
-                    <h1>Line 6</h1>
-                  </div>
-                </motion.div>
-                <motion.div
-                  className="kpi-item"
-                  variants={itemVariants}
-                  animate={isSecondExapnded ? "small" : "large"}
-                  style={{
-                    backgroundColor: "#D8FDFF",
-                  }}
-                  onClick={() => setIsSecondExpanded(!isSecondExapnded)}
-                >
-                  <div className="content">
-                    <h1>Line 7</h1>
-                  </div>
+                  {lineList.map((lineData) => (
+                    <LineCard
+                      key={lineData.name}
+                      lineData={lineData}
+                      onClick={() => expandLevelTwo(!levelTwoExapanded)}
+                      expanded={levelTwoExapanded}
+                      dimensions={cardDimensions}
+                    />
+                  ))}
                 </motion.div>
               </motion.div>
             </motion.div>

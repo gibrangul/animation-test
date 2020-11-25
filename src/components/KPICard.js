@@ -1,6 +1,8 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Chart from "react-apexcharts";
+import "./kpicard.scss";
+
 const DEFAULT_TRANSITION = { duration: 0.4, ease: "easeInOut" };
 
 const getContentVariants = ({ maxWidth, minWidth, minHeight }) => {
@@ -12,6 +14,7 @@ const getContentVariants = ({ maxWidth, minWidth, minHeight }) => {
       paddingRight: "48px",
       width: `${maxWidth - 96}px`,
       height: `${maxWidth - 96}px`,
+      // borderLeft: "0px solid rgb(184, 188, 199)",
       transition: DEFAULT_TRANSITION,
     },
     small: {
@@ -22,6 +25,7 @@ const getContentVariants = ({ maxWidth, minWidth, minHeight }) => {
       width: `${minWidth - 64}px`,
       height: `${minHeight - 34}px`,
       transition: DEFAULT_TRANSITION,
+      // borderLeft: "1px solid rgb(184, 188, 199)",
     },
   };
 };
@@ -46,28 +50,6 @@ const detailVariants = {
   small: {
     flexDirection: "row",
     alignItems: "center",
-    transition: DEFAULT_TRANSITION,
-  },
-};
-
-const titleVariant = {
-  large: {
-    marginBottom: "16px",
-    transition: DEFAULT_TRANSITION,
-  },
-  small: {
-    marginBottom: "0px",
-    transition: DEFAULT_TRANSITION,
-  },
-};
-
-const percentVariant = {
-  large: {
-    fontSize: "4.5rem",
-    transition: DEFAULT_TRANSITION,
-  },
-  small: {
-    fontSize: "2rem",
     transition: DEFAULT_TRANSITION,
   },
 };
@@ -132,7 +114,7 @@ const chartOptions = {
   },
 };
 
-const KPI = ({ chartData, expanded, onClick, dimensions }) => {
+const KPICard = ({ chartData, expanded, onClick, dimensions }) => {
   const contentVariants = getContentVariants(dimensions);
 
   const currentSize = expanded ? "large" : "small";
@@ -149,21 +131,47 @@ const KPI = ({ chartData, expanded, onClick, dimensions }) => {
         min: 0,
       };
 
+  const titleVariant = {
+    large: {
+      marginBottom: "16px",
+      color: "#4c5775",
+      transition: DEFAULT_TRANSITION,
+    },
+    small: {
+      marginBottom: "0px",
+      color: chartData.colors[0],
+      transition: DEFAULT_TRANSITION,
+    },
+  };
+
+  const percentVariant = {
+    large: {
+      fontSize: "4.5rem",
+      color: "#4c5775",
+      transition: DEFAULT_TRANSITION,
+    },
+    small: {
+      fontSize: "2rem",
+      color: chartData.colors[0],
+      transition: DEFAULT_TRANSITION,
+    },
+  };
+
   return (
     <motion.div
-      className="kpi-item"
+      className="kpi-card"
       variants={conatinerVariants}
       animate={currentSize}
       initial="large"
       onClick={onClick}
     >
       <motion.div
-        className="kpi-item__content"
+        className="kpi-card__content"
         variants={contentVariants}
         animate={currentSize}
       >
         <motion.div
-          className="kpi-item__content__details"
+          className="kpi-card__content__details"
           variants={detailVariants}
           animate={currentSize}
         >
@@ -209,4 +217,4 @@ const KPI = ({ chartData, expanded, onClick, dimensions }) => {
   );
 };
 
-export default KPI;
+export default KPICard;
