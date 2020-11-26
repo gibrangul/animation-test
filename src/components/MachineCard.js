@@ -1,6 +1,6 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import "./linecard.scss";
+import "./machinecard.scss";
 
 const DEFAULT_TRANSITION = { duration: 0.4, ease: "easeInOut" };
 
@@ -64,7 +64,7 @@ const buttonContainerVariants = {
   },
 };
 
-const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
+const MachineCard = ({ machineData, expanded, onClick, dimensions }) => {
   const contentVariants = getContentVariants(dimensions);
 
   const currentSize = expanded ? "large" : "small";
@@ -77,7 +77,7 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
     },
     small: {
       marginBottom: "0px",
-      color: lineData.color,
+      color: machineData.color,
       transition: DEFAULT_TRANSITION,
     },
   };
@@ -90,26 +90,26 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
     },
     small: {
       fontSize: "2rem",
-      color: lineData.color,
+      color: machineData.color,
       transition: DEFAULT_TRANSITION,
     },
   };
 
   return (
     <motion.div
-      className="line-card"
+      className="machine-card"
       variants={conatinerVariants}
       animate={currentSize}
       initial="large"
       onClick={onClick}
     >
       <motion.div
-        className="line-card__content"
+        className="machine-card__content"
         variants={contentVariants}
         animate={currentSize}
       >
         <motion.div
-          className="line-card__content__details"
+          className="machine-card__content__details"
           variants={detailVariants}
           animate={currentSize}
         >
@@ -118,14 +118,14 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
             variants={titleVariant}
             animate={currentSize}
           >
-            {lineData.name}
+            {machineData.name}
           </motion.h1>
           <motion.h1
             className="primary-font"
             variants={percentVariant}
             animate={currentSize}
           >
-            {lineData.percent}
+            {machineData.percent}
             <span style={{ fontSize: "2rem" }}>%</span>
           </motion.h1>
         </motion.div>
@@ -139,8 +139,8 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
               exit="hidden"
             >
               <motion.div className="button">
-                <div className="icon icon-32 icon-machines mr-12" />
-                <motion.p>Machines</motion.p>
+                <div className="icon icon-32 icon-lines mr-12" />
+                <motion.p>Lines</motion.p>
               </motion.div>
               <motion.div className="button">
                 <div className="icon icon-32 icon-workers mr-12" />
@@ -154,4 +154,4 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
   );
 };
 
-export default LineCard;
+export default MachineCard;

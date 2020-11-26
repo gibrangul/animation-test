@@ -4,7 +4,7 @@ import "./sectionheader.scss";
 
 const DEFAULT_TRANSITION = { duration: 0.4, ease: "easeInOut" };
 
-const SectionHeader = () => {
+const SectionHeader = ({ title }) => {
   const sectionHeaderVariant = {
     hidden: {
       opacity: 0,
@@ -26,7 +26,7 @@ const SectionHeader = () => {
       animate="visible"
       exit="hidden"
     >
-      <motion.h1 className="primary-font">Lines</motion.h1>
+      <motion.h1 className="primary-font">{title}</motion.h1>
     </motion.div>
   );
 };

@@ -1,0 +1,23 @@
+.icon {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.icon-32 {
+  width: 32px;
+  height: 32px;
+  background-size: 32px;
+}
+
+.icon-machines {
+  background-image: url("../images/icons/machines.png");
+}
+
+.icon-workers {
+  background-image: url("../images/icons/workers.png");
+}
+
+.icon-lines {
+  background-image: url("../images/icons/lines.png");
+}

@@ -46,21 +46,82 @@ export const lineList = [
   {
     name: "Line 1",
     color: "#FF8787",
+    percent: 29,
   },
   {
     name: "Line 2",
     color: "#FFC785",
+    percent: 33,
   },
   {
     name: "Line 3",
     color: "#FFEB85",
+    percent: 44,
   },
   {
     name: "Line 4",
     color: "#85FFBD",
+    percent: 26,
   },
   {
     name: "Line 5",
     color: "#85BDFF",
+    percent: 29,
+  },
+];
+
+export const machineList = [
+  {
+    name: "Machine 1",
+    color: "#FF8787",
+    percent: 75,
+  },
+  {
+    name: "Machine 2",
+    color: "#FFC785",
+    percent: 65,
+  },
+  {
+    name: "Machine 3",
+    color: "#FFEB85",
+    percent: 48,
+  },
+  {
+    name: "Machine 4",
+    color: "#85FFBD",
+    percent: 91,
+  },
+  {
+    name: "Machine 5",
+    color: "#85BDFF",
+    percent: 80,
+  },
+];
+
+export const workerList = [
+  {
+    name: "Worker 1",
+    color: "#FF8787",
+    percent: 23,
+  },
+  {
+    name: "Worker 2",
+    color: "#FFC785",
+    percent: 11,
+  },
+  {
+    name: "Worker 3",
+    color: "#FFEB85",
+    percent: 15,
+  },
+  {
+    name: "Worker 4",
+    color: "#85FFBD",
+    percent: 19,
+  },
+  {
+    name: "Worker 5",
+    color: "#85BDFF",
+    percent: 31,
   },
 ];

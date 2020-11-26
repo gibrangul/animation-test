@@ -2,7 +2,13 @@ import React from "react";
 import "./leveltwobuttons.scss";
 import { motion } from "framer-motion";
 
-const LevelTwoButtons = ({ height, transition, onClick }) => {
+const LevelTwoButtons = ({
+  height,
+  transition,
+  onClick,
+  onClickMachines,
+  onClickWorkers,
+}) => {
   const buttonVariants = {
     visible: {
       opacity: 1,
@@ -24,12 +30,15 @@ const LevelTwoButtons = ({ height, transition, onClick }) => {
       exit="hidden"
     >
       <div className="button" onClick={onClick}>
+        <div className="icon icon-32 icon-lines mr-12" />
         Lines
       </div>
-      <div className="button" onClick={onClick}>
+      <div className="button" onClick={onClickMachines}>
+        <div className="icon icon-32 icon-machines mr-12" />
         Machines
       </div>
-      <div className="button" onClick={onClick}>
+      <div className="button" onClick={onClickWorkers}>
+        <div className="icon icon-32 icon-workers mr-12" />
         Workers
       </div>
     </motion.div>

@@ -3,10 +3,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import useDimensions from "../utils/useDimensions";
 import KPICard from "./KPICard";
 import LineCard from "./LineCard";
-import { chartList, lineList } from "./dummyData";
+import { chartList, lineList, machineList, workerList } from "./dummyData";
 import LevelTwoButtons from "./LevelTwoButtons";
 import NavBar from "./NavBar";
 import SectionHeader from "./SectionHeader";
+import MachineCard from "./MachineCard";
+import WorkerCard from "./WokerCard";
 
 const NAV_BAR_HEIGHT = 80;
 const SPACING = 32;
@@ -132,6 +134,45 @@ const App = () => {
 
   const [levelOneExpanded, expandLevelOne] = useState(true);
   const [levelTwoExapanded, expandLevelTwo] = useState(false);
+  // const [machinesExapanded, expandMachines] = useState(false);
+  const [tab, setTab] = useState("dashboard");
+
+  const renderTab = (tab) => {
+    switch (tab) {
+      case "lines":
+        return lineList.map((lineData) => (
+          <LineCard
+            key={lineData.name}
+            lineData={lineData}
+            onClick={() => expandLevelTwo(!levelTwoExapanded)}
+            expanded={levelTwoExapanded}
+            dimensions={cardDimensions}
+          />
+        ));
+      case "machines":
+        return machineList.map((machineData) => (
+          <MachineCard
+            key={machineData.name}
+            machineData={machineData}
+            onClick={() => expandLevelTwo(!levelTwoExapanded)}
+            expanded={levelTwoExapanded}
+            dimensions={cardDimensions}
+          />
+        ));
+      case "workers":
+        return workerList.map((workerData) => (
+          <WorkerCard
+            key={workerData.name}
+            workerData={workerData}
+            onClick={() => expandLevelTwo(!levelTwoExapanded)}
+            expanded={levelTwoExapanded}
+            dimensions={cardDimensions}
+          />
+        ));
+      default:
+        return null;
+    }
+  };
   return (
     <div className="container">
       <NavBar />
@@ -155,6 +196,7 @@ const App = () => {
                 onClick={() => {
                   expandLevelOne(true);
                   expandLevelTwo(false);
+                  setTab("dashboard");
                 }}
                 expanded={levelOneExpanded}
                 dimensions={cardDimensions}
@@ -176,6 +218,17 @@ const App = () => {
               onClick={() => {
                 expandLevelOne(false);
                 expandLevelTwo(true);
+                setTab("lines");
+              }}
+              onClickMachines={() => {
+                expandLevelOne(false);
+                expandLevelTwo(true);
+                setTab("machines");
+              }}
+              onClickWorkers={() => {
+                expandLevelOne(false);
+                expandLevelTwo(true);
+                setTab("workers");
               }}
             />
           )}
@@ -190,7 +243,7 @@ const App = () => {
               exit="hidden"
             >
               <AnimatePresence>
-                {levelTwoExapanded && <SectionHeader />}
+                {levelTwoExapanded && <SectionHeader title={tab} />}
               </AnimatePresence>
               <motion.div
                 className="scroll-container level-two-grid-container"
@@ -204,15 +257,7 @@ const App = () => {
                   initial="large"
                   animate={levelTwoExapanded ? "large" : "small"}
                 >
-                  {lineList.map((lineData) => (
-                    <LineCard
-                      key={lineData.name}
-                      lineData={lineData}
-                      onClick={() => expandLevelTwo(!levelTwoExapanded)}
-                      expanded={levelTwoExapanded}
-                      dimensions={cardDimensions}
-                    />
-                  ))}
+                  {renderTab(tab)}
                 </motion.div>
               </motion.div>
             </motion.div>
