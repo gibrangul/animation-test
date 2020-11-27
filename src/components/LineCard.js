@@ -8,11 +8,11 @@ const getContentVariants = ({ maxWidth, minWidth, minHeight }) => {
   return {
     large: {
       paddingTop: "48px",
-      paddingBottom: "48px",
+      paddingBottom: "17px",
       paddingLeft: "48px",
       paddingRight: "48px",
       width: `${maxWidth - 96}px`,
-      height: `${maxWidth - 96}px`,
+      height: `${maxWidth - 65}px`,
       transition: DEFAULT_TRANSITION,
     },
     small: {
@@ -47,6 +47,19 @@ const detailVariants = {
   small: {
     flexDirection: "row",
     alignItems: "center",
+    transition: DEFAULT_TRANSITION,
+  },
+};
+
+const kpiVariants = {
+  hidden: {
+    opacity: 0,
+    scale: 0,
+    transition: DEFAULT_TRANSITION,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
     transition: DEFAULT_TRANSITION,
   },
 };
@@ -129,6 +142,49 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
             <span style={{ fontSize: "2rem" }}>%</span>
           </motion.h1>
         </motion.div>
+        <AnimatePresence>
+          {currentSize === "large" && (
+            <motion.div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+              variants={kpiVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <div>
+                <h2 className="secondary-font">KPI 1</h2>
+                <h1 className="primary-font">
+                  {lineData.percent}
+                  <span style={{ fontSize: "2rem" }}>%</span>
+                </h1>
+              </div>
+              <div>
+                <h2 className="secondary-font">KPI 2</h2>
+                <h1 className="primary-font">
+                  {lineData.percent}
+                  <span style={{ fontSize: "2rem" }}>%</span>
+                </h1>
+              </div>
+              <div>
+                <h2 className="secondary-font">KPI 3</h2>
+                <h1 className="primary-font">
+                  {lineData.percent}
+                  <span style={{ fontSize: "2rem" }}>%</span>
+                </h1>
+              </div>
+              <div>
+                <h2 className="secondary-font">KPI 4</h2>
+                <h1 className="primary-font">
+                  {lineData.percent}
+                  <span style={{ fontSize: "2rem" }}>%</span>
+                </h1>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <AnimatePresence>
           {currentSize === "large" && (
             <motion.div
