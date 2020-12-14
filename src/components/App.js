@@ -173,6 +173,12 @@ const App = () => {
         return null;
     }
   };
+
+  const openLevelOne = () => {
+    expandLevelOne(true);
+    expandLevelTwo(false);
+    setTab("dashboard");
+  };
   return (
     <div className="container">
       <NavBar />
@@ -193,11 +199,7 @@ const App = () => {
               <KPICard
                 key={chartData.name}
                 chartData={chartData}
-                onClick={() => {
-                  expandLevelOne(true);
-                  expandLevelTwo(false);
-                  setTab("dashboard");
-                }}
+                onClick={openLevelOne}
                 expanded={levelOneExpanded}
                 dimensions={cardDimensions}
               />
@@ -243,7 +245,9 @@ const App = () => {
               exit="hidden"
             >
               <AnimatePresence>
-                {levelTwoExapanded && <SectionHeader title={tab} />}
+                {levelTwoExapanded && (
+                  <SectionHeader title={tab} onBackClick={openLevelOne} />
+                )}
               </AnimatePresence>
               <motion.div
                 className="scroll-container level-two-grid-container"

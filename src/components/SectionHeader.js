@@ -4,7 +4,7 @@ import "./sectionheader.scss";
 
 const DEFAULT_TRANSITION = { duration: 0.4, ease: "easeInOut" };
 
-const SectionHeader = ({ title }) => {
+const SectionHeader = ({ title, onBackClick }) => {
   const sectionHeaderVariant = {
     hidden: {
       opacity: 0,
@@ -26,7 +26,12 @@ const SectionHeader = ({ title }) => {
       animate="visible"
       exit="hidden"
     >
-      <motion.h1 className="primary-font">{title}</motion.h1>
+      <motion.h1 className="primary-font">
+        {/* {title} */}
+        <button className="button-primary" onClick={onBackClick}>
+          Back
+        </button>
+      </motion.h1>
     </motion.div>
   );
 };

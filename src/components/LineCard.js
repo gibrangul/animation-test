@@ -7,12 +7,12 @@ const DEFAULT_TRANSITION = { duration: 0.4, ease: "easeInOut" };
 const getContentVariants = ({ maxWidth, minWidth, minHeight }) => {
   return {
     large: {
-      paddingTop: "48px",
-      paddingBottom: "17px",
-      paddingLeft: "48px",
-      paddingRight: "48px",
-      width: `${maxWidth - 96}px`,
-      height: `${maxWidth - 65}px`,
+      paddingTop: "32px",
+      paddingBottom: "32px",
+      paddingLeft: "32px",
+      paddingRight: "32px",
+      width: `${maxWidth - 64}px`,
+      height: `${maxWidth - 64}px`,
       transition: DEFAULT_TRANSITION,
     },
     small: {
@@ -42,11 +42,17 @@ const detailVariants = {
   large: {
     flexDirection: "column",
     alignItems: "flex-start",
+    marginLeft: "16px",
+    marginRight: "16px",
+    marginTop: "16px",
     transition: DEFAULT_TRANSITION,
   },
   small: {
     flexDirection: "row",
     alignItems: "center",
+    marginLeft: "0px",
+    marginRight: "0px",
+    marginTop: "0px",
     transition: DEFAULT_TRANSITION,
   },
 };
@@ -153,6 +159,7 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
               initial="hidden"
               animate="visible"
               exit="hidden"
+              className="mh-16"
             >
               <div>
                 <h2 className="secondary-font">KPI 1</h2>
@@ -194,12 +201,12 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
               animate="visible"
               exit="hidden"
             >
-              <motion.div className="button">
-                <div className="icon icon-32 icon-machines mr-12" />
+              <motion.div className="button-primary mr-12">
+                <div className="icon icon-32 icon-machines-w mr-12" />
                 <motion.p>Machines</motion.p>
               </motion.div>
-              <motion.div className="button">
-                <div className="icon icon-32 icon-workers mr-12" />
+              <motion.div className="button-primary">
+                <div className="icon icon-32 icon-workers-w mr-12" />
                 <motion.p>Workers</motion.p>
               </motion.div>
             </motion.div>

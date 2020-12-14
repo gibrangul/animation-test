@@ -6,8 +6,11 @@
     // align-items: center;
     // justify-content: center;
     // cursor: pointer;
-    background-color: #f8fafc;
+    background-color: #007aff;
+    color: white;
     &:hover {
+      background-color: darken($color: #007aff, $amount: 10%);
+      color: white;
       border-right: 1px solid rgb(184, 188, 199);
       border-left: 1px solid rgb(184, 188, 199);
     }

@@ -30,16 +30,12 @@ const LevelTwoButtons = ({
       exit="hidden"
     >
       <div className="button" onClick={onClick}>
-        <div className="icon icon-32 icon-lines mr-12" />
+        <div className="icon icon-32 icon-lines-w mr-12" />
         Lines
       </div>
-      <div className="button" onClick={onClickMachines}>
-        <div className="icon icon-32 icon-machines mr-12" />
-        Machines
-      </div>
       <div className="button" onClick={onClickWorkers}>
-        <div className="icon icon-32 icon-workers mr-12" />
-        Workers
+        <div className="icon icon-32 icon-orders-w mr-12" />
+        Orders
       </div>
     </motion.div>
   );

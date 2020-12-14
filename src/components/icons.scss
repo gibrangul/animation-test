@@ -10,6 +10,15 @@
   background-size: 32px;
 }
 
+.logo {
+  background-image: url("../images/logo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  height: 64px;
+  width: 228px;
+}
+
 .icon-machines {
   background-image: url("../images/icons/machines.png");
 }
@@ -18,6 +27,22 @@
   background-image: url("../images/icons/workers.png");
 }
 
+.icon-machines-w {
+  background-image: url("../images/icons/machines-white.png");
+}
+
+.icon-workers-w {
+  background-image: url("../images/icons/workers-white.png");
+}
+
 .icon-lines {
   background-image: url("../images/icons/lines.png");
+}
+
+.icon-lines-w {
+  background-image: url("../images/icons/lines-white.png");
+}
+
+.icon-orders-w {
+  background-image: url("../images/icons/orders-white.png");
 }
