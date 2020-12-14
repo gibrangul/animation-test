@@ -96,6 +96,18 @@ const App = () => {
     [height]
   );
 
+  const thirdGridContainerVariants = useMemo(
+    () =>
+      getGridContainerVariants(
+        {
+          maxHeight: height - NAV_BAR_HEIGHT - ROW_HEIGHT * 3,
+          minHeight: ROW_HEIGHT,
+        },
+        DEFAULT_TRANSITION
+      ),
+    [height]
+  );
+
   const gridSizeVariants = useMemo(
     () =>
       getGridVariants(
@@ -119,6 +131,18 @@ const App = () => {
     },
   };
 
+  const levelThreeContainerVariants = {
+    small: {
+      height: `0px`,
+      transition: DEFAULT_TRANSITION,
+      borderTop: "1px solid #B8BCC7",
+    },
+    full: {
+      height: `${height - NAV_BAR_HEIGHT - ROW_HEIGHT - ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
+    },
+  };
+
   const levelTwoContentVariants = {
     visible: {
       opacity: 1,
@@ -132,9 +156,23 @@ const App = () => {
     },
   };
 
+  const levelThreeContentVariants = {
+    visible: {
+      opacity: 1,
+      height: `${height - NAV_BAR_HEIGHT - ROW_HEIGHT - ROW_HEIGHT}px`,
+      transition: DEFAULT_TRANSITION,
+    },
+    hidden: {
+      opacity: 0,
+      height: "0px",
+      transition: DEFAULT_TRANSITION,
+    },
+  };
+
   const [levelOneExpanded, expandLevelOne] = useState(true);
-  const [levelTwoExapanded, expandLevelTwo] = useState(false);
-  // const [machinesExapanded, expandMachines] = useState(false);
+  const [levelTwoExpanded, expandLevelTwo] = useState(false);
+  const [machinesExpanded, expandMachines] = useState(false);
+  const [workersExpanded, expandWorkers] = useState(false);
   const [tab, setTab] = useState("dashboard");
 
   const renderTab = (tab) => {
@@ -144,8 +182,15 @@ const App = () => {
           <LineCard
             key={lineData.name}
             lineData={lineData}
-            onClick={() => expandLevelTwo(!levelTwoExapanded)}
-            expanded={levelTwoExapanded}
+            expandMachines={() => {
+              expandLevelTwo(false);
+              expandMachines(true);
+            }}
+            expandWorkers={() => {
+              expandLevelTwo(false);
+              expandWorkers(true);
+            }}
+            expanded={levelTwoExpanded}
             dimensions={cardDimensions}
           />
         ));
@@ -154,8 +199,8 @@ const App = () => {
           <MachineCard
             key={machineData.name}
             machineData={machineData}
-            onClick={() => expandLevelTwo(!levelTwoExapanded)}
-            expanded={levelTwoExapanded}
+            onClick={() => expandLevelTwo(!levelTwoExpanded)}
+            expanded={levelTwoExpanded}
             dimensions={cardDimensions}
           />
         ));
@@ -164,8 +209,8 @@ const App = () => {
           <WorkerCard
             key={workerData.name}
             workerData={workerData}
-            onClick={() => expandLevelTwo(!levelTwoExapanded)}
-            expanded={levelTwoExapanded}
+            onClick={() => expandLevelTwo(!levelTwoExpanded)}
+            expanded={levelTwoExpanded}
             dimensions={cardDimensions}
           />
         ));
@@ -174,11 +219,64 @@ const App = () => {
     }
   };
 
+  const renderLines = () =>
+    lineList.map((lineData) => (
+      <LineCard
+        key={lineData.name}
+        lineData={lineData}
+        expandMachines={() => {
+          expandLevelTwo(false);
+          expandMachines(true);
+          expandWorkers(false);
+          setTab("machines");
+        }}
+        expandWorkers={() => {
+          expandLevelTwo(false);
+          expandWorkers(true);
+          expandMachines(false);
+          setTab("workers");
+        }}
+        expanded={levelTwoExpanded}
+        dimensions={cardDimensions}
+      />
+    ));
+
+  const renderMachines = () =>
+    machineList.map((machineData) => (
+      <MachineCard
+        key={machineData.name}
+        machineData={machineData}
+        onClick={() => console.log("machine")}
+        expanded={machinesExpanded}
+        dimensions={cardDimensions}
+      />
+    ));
+
+  const renderWorkers = () =>
+    workerList.map((workerData) => (
+      <WorkerCard
+        key={workerData.name}
+        workerData={workerData}
+        onClick={() => console.log("worker")}
+        expanded={workersExpanded}
+        dimensions={cardDimensions}
+      />
+    ));
+
   const openLevelOne = () => {
     expandLevelOne(true);
     expandLevelTwo(false);
     setTab("dashboard");
   };
+
+  const openLevelTwo = () => {
+    expandLevelOne(false);
+    expandLevelTwo(true);
+    expandMachines(false);
+    expandWorkers(false);
+    setTab("lines");
+  };
+
   return (
     <div className="container">
       <NavBar />
@@ -210,7 +308,7 @@ const App = () => {
       <motion.div
         className="level-two-contiainer"
         variants={levelTwoContainerVariants}
-        animate={levelOneExpanded ? "buttons" : "full"}
+        animate={levelTwoExpanded ? "full" : "buttons"}
       >
         <AnimatePresence>
           {levelOneExpanded && (
@@ -245,7 +343,7 @@ const App = () => {
               exit="hidden"
             >
               <AnimatePresence>
-                {levelTwoExapanded && (
+                {levelTwoExpanded && (
                   <SectionHeader title={tab} onBackClick={openLevelOne} />
                 )}
               </AnimatePresence>
@@ -253,15 +351,84 @@ const App = () => {
                 className="scroll-container level-two-grid-container"
                 variants={lineGridContainerVariants}
                 initial="large"
-                animate={levelTwoExapanded ? "large" : "small"}
+                animate={levelTwoExpanded ? "large" : "small"}
               >
                 <motion.div
                   className="grid"
                   variants={gridSizeVariants}
                   initial="large"
-                  animate={levelTwoExapanded ? "large" : "small"}
+                  animate={levelTwoExpanded ? "large" : "small"}
                 >
-                  {renderTab(tab)}
+                  {renderLines()}
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+      <motion.div
+        className="level-three-contiainer"
+        variants={levelThreeContainerVariants}
+        animate={machinesExpanded || workersExpanded ? "full" : "small"}
+      >
+        <AnimatePresence>
+          {!levelOneExpanded && !levelTwoExpanded && machinesExpanded && (
+            <motion.div
+              className="level-two-content"
+              variants={levelThreeContentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <AnimatePresence>
+                {machinesExpanded && (
+                  <SectionHeader title={tab} onBackClick={openLevelTwo} />
+                )}
+              </AnimatePresence>
+              <motion.div
+                className="scroll-container level-two-grid-container"
+                variants={thirdGridContainerVariants}
+                initial="large"
+                animate={machinesExpanded ? "large" : "small"}
+              >
+                <motion.div
+                  className="grid"
+                  variants={gridSizeVariants}
+                  initial="large"
+                  animate={machinesExpanded ? "large" : "small"}
+                >
+                  {renderMachines()}
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          )}
+
+          {!levelOneExpanded && !levelTwoExpanded && workersExpanded && (
+            <motion.div
+              className="level-two-content"
+              variants={levelThreeContentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+            >
+              <AnimatePresence>
+                {workersExpanded && (
+                  <SectionHeader title={tab} onBackClick={openLevelTwo} />
+                )}
+              </AnimatePresence>
+              <motion.div
+                className="scroll-container level-two-grid-container"
+                variants={thirdGridContainerVariants}
+                initial="large"
+                animate={workersExpanded ? "large" : "small"}
+              >
+                <motion.div
+                  className="grid"
+                  variants={gridSizeVariants}
+                  initial="large"
+                  animate={workersExpanded ? "large" : "small"}
+                >
+                  {renderWorkers()}
                 </motion.div>
               </motion.div>
             </motion.div>

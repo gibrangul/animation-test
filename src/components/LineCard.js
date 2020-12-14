@@ -83,7 +83,13 @@ const buttonContainerVariants = {
   },
 };
 
-const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
+const LineCard = ({
+  lineData,
+  expanded,
+  expandMachines,
+  expandWorkers,
+  dimensions,
+}) => {
   const contentVariants = getContentVariants(dimensions);
 
   const currentSize = expanded ? "large" : "small";
@@ -120,7 +126,7 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
       variants={conatinerVariants}
       animate={currentSize}
       initial="large"
-      onClick={onClick}
+      // onClick={onClick}
     >
       <motion.div
         className="line-card__content"
@@ -201,11 +207,14 @@ const LineCard = ({ lineData, expanded, onClick, dimensions }) => {
               animate="visible"
               exit="hidden"
             >
-              <motion.div className="button-primary mr-12">
+              <motion.div
+                className="button-primary mr-12"
+                onClick={expandMachines}
+              >
                 <div className="icon icon-32 icon-machines-w mr-12" />
                 <motion.p>Machines</motion.p>
               </motion.div>
-              <motion.div className="button-primary">
+              <motion.div className="button-primary" onClick={expandWorkers}>
                 <div className="icon icon-32 icon-workers-w mr-12" />
                 <motion.p>Workers</motion.p>
               </motion.div>

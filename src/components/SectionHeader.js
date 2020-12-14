@@ -26,7 +26,7 @@ const SectionHeader = ({ title, onBackClick }) => {
       animate="visible"
       exit="hidden"
     >
-      <motion.h1 className="primary-font">
+      <motion.h1 className="primary-font flex flex-al">
         {/* {title} */}
         <button className="button-primary" onClick={onBackClick}>
           Back

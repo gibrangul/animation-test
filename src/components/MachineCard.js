@@ -138,14 +138,14 @@ const MachineCard = ({ machineData, expanded, onClick, dimensions }) => {
               animate="visible"
               exit="hidden"
             >
-              <motion.div className="button">
+              {/* <motion.div className="button">
                 <div className="icon icon-32 icon-lines mr-12" />
                 <motion.p>Lines</motion.p>
               </motion.div>
               <motion.div className="button">
                 <div className="icon icon-32 icon-workers mr-12" />
                 <motion.p>Workers</motion.p>
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           )}
         </AnimatePresence>
